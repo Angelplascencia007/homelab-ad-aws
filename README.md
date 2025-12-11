@@ -191,7 +191,7 @@ C:\CompanyShares\
    ├── Sales
    └── Public
 
-<img src="https://github.com/user-attachments/assets/f90a96ef-91cf-4187-84e9-33e5d91d14f8" width="100%" />
+
 
 Why NTFS matters:
 NTFS defines actual access.
