@@ -191,6 +191,7 @@ C:\CompanyShares\
    ├── Sales
    └── Public
 
+![image](https://github.com/user-attachments/assets/113b8274-c1b5-4ea0-b04b-57fa27664374)
 
 
 Why NTFS matters:
