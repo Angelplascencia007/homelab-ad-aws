@@ -207,7 +207,8 @@ Each department receives an automatic mapped network drive using GPO Preferences
 This simulates real-world corporate user experience.
 
 ⭐ 7. Workstation Join & Testing
-<img src="https://github.com/user-attachments/assets/4bbbc3d4-df07-4780-8614-8b865fbdedc1" width="100%" />
+![image](https://github.com/user-attachments/assets/2606c238-64d2-40c3-a704-069d4f8a8080)
+
 
 Steps:
 
