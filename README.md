@@ -1,5 +1,3 @@
-Create a file called README.md in the root with this content:
-
 # AWS Active Directory Homelab (helpdesk.local)
 
 This repository documents my full **Active Directory homelab** built entirely in **AWS**, including:
@@ -98,17 +96,11 @@ DC01 RDP connect
 - Instance type: `t3.micro`
 - Joined to `helpdesk.local` and used to test GPOs, file shares, and drive mappings.
 
-![Workstation01 instance](screenshots/aws/08-workstation01-instance-details.png)  
-![Workstation RDP connect](screenshots/aws/09-workstation01-rdp-connect.png)
-
-More details about the instance configuration and domain promotion are in  
-📄 [`documentation/ad-setup.md`](documentation/ad-setup.md)
-
----
-
 ## 3. Active Directory Design
 
 **Domain:** `helpdesk.local`
+
+![IMG_5529](https://github.com/user-attachments/assets/05c1666e-2f8b-4bd1-94e7-ba17893e088c)
 
 ### Organizational Units
 
@@ -123,12 +115,14 @@ I created a simple but realistic OU structure:
 - `Company Departments`
 - `Service OUs`
 
-![ADUC OU structure](screenshots/active-directory/01-aduc-root-ous.png)
+![IMG_F3944D0A-D20C-495E-902D-AE610133C64F](https://github.com/user-attachments/assets/c66aeff5-cd80-4883-8351-f79862192bdc)
+
 
 Workstations have their own OU so I can target GPOs just at computers:
 
-![Workstations OU](screenshots/active-directory/05-aduc-workstations-ou-empty.png)  
-![Workstation computer object](screenshots/active-directory/06-aduc-workstation-object-ec2amaz.png)
+![Workstations OU](screenshots/active-directory/05-aduc-workstations-ou-empty.png) 
+
+![IMG_5564](https://github.com/user-attachments/assets/35fce3e0-b2a5-4c2e-be14-20ca520e8624)
 
 ### Users
 
@@ -139,14 +133,14 @@ Example users:
 - **James Cruz** – IT (`jcruz`)
 - **Test User1** – generic test account
 
-![Create John Parker](screenshots/users-and-groups/01-create-user-john-parker-sales.png)  
-![Create Maria Lopez](screenshots/users-and-groups/02-create-user-maria-lopez-hr.png)  
-![Create James Cruz](screenshots/users-and-groups/03-create-user-james-cruz-it.png)
+Create John Parker
+![IMG_5533](https://github.com/user-attachments/assets/fff48354-e08b-49e2-a4e9-bc5e2f3559c2)
 
-All AD creation steps are covered in  
-📄 [`documentation/ad-setup.md`](documentation/ad-setup.md)
+Create Maria Lopez
+![IMG_5534](https://github.com/user-attachments/assets/e38e2512-2f32-45a7-b57c-a4cfb35f8ead)
 
----
+Create James Cruz
+![IMG_5535](https://github.com/user-attachments/assets/ba7abba4-8dab-4b13-b2c1-7720a634294d)
 
 ## 4. Security Baseline GPO
 
@@ -157,7 +151,9 @@ I created a **domain-linked GPO** called **“Security Baseline GPO”** that co
 - Kerberos policy
 - Local security options & auditing (extendable)
 
-![Create Security Baseline GPO](screenshots/gpo-security/01-gpmc-create-security-baseline-gpo.png)
+Create Security Baseline GPO
+![IMG_5568](https://github.com/user-attachments/assets/d03fe194-885e-4447-8e27-bdf263c8d4cf)
+
 
 ### Password Policy
 
@@ -166,7 +162,9 @@ I created a **domain-linked GPO** called **“Security Baseline GPO”** that co
 - Minimum length: **8 characters**
 - Complexity: **Enabled**
 
-![Password policy settings](screenshots/gpo-security/03-gpo-password-policy-settings.png)
+Password policy settings
+
+![IMG_5570](https://github.com/user-attachments/assets/c33f7b01-eca2-4e15-a898-f8afc20b3aa6)
 
 ### Account Lockout Policy
 
@@ -174,16 +172,10 @@ I created a **domain-linked GPO** called **“Security Baseline GPO”** that co
 - Lockout duration: **15 minutes**  
 - Reset counter after: **10 minutes**
 
-![Account lockout settings](screenshots/gpo-security/05-gpo-account-lockout-settings.png)
+Account lockout settings
 
 After linking the GPO at the domain level, I forced an update:
-
-```powershell
-gpupdate /force
-
-
-More details in
-📄 documentation/gpo-hardening.md
+![IMG_5571](https://github.com/user-attachments/assets/e8b8655b-c916-4b12-9dc7-113cff605c75)
 
 5. File Shares & NTFS Permissions
 
@@ -208,6 +200,7 @@ Everyone / Domain Users – Read/Write on Public (lab choice)
 
 Helpdesk\Administrators – Full control on all
 
+![IMG_5588](https://github.com/user-attachments/assets/f90a96ef-91cf-4187-84e9-33e5d91d14f8)
 
 
 
@@ -219,11 +212,8 @@ Administrators – Full Control
 
 Domain Users – Read (I enforce access via NTFS)
 
+![IMG_5592](https://github.com/user-attachments/assets/153e3d3e-2945-4815-8cb7-365e7bd5cbf8)
 
-
-
-Full breakdown in
-📄 documentation/file-shares.md
 
 6. GPO – Drive Mapping
 
@@ -241,22 +231,15 @@ Label: HR Share
 
 Security filter / WMI / Item-level targeting: HR group only (lab logic)
 
-
-
-
-
-
-
+![IMG_5596](https://github.com/user-attachments/assets/c4e1356f-fb2f-4919-b3ba-0d7bd95ec6e9)
 
 After applying the GPO, I ran:
 
 gpupdate /force
 
+![IMG_5586](https://github.com/user-attachments/assets/4e22c1e2-4358-421b-996d-0e4510bce558)
 
 from the workstation and confirmed the mapped drive appears in File Explorer.
-
-More details in
-📄 documentation/workstation-setup.md
 
 7. Workstation Join & Testing
 
@@ -277,6 +260,7 @@ IT users have wider access (lab-style admin).
 Mapped drives appear automatically.
 
 
+![IMG_5553](https://github.com/user-attachments/assets/4bbbc3d4-df07-4780-8614-8b865fbdedc1)
 
 
 
@@ -293,17 +277,13 @@ Verifying the helpdesk.local forward lookup zone exists on DC01.
 
 Checking security groups to allow DNS (UDP/TCP 53) within the subnet.
 
-9. Next Steps / Ideas
+![IMG_6B052B13-0EFE-40C9-8218-CCF18FA8848D](https://github.com/user-attachments/assets/cb990442-1692-420c-904e-91c0cbc79d94)
 
-Some future improvements I may add to this lab:
+![IMG_F140E4E6-DA26-480C-8FD4-D0A3CEBF992C](https://github.com/user-attachments/assets/7f25e764-6dea-46d8-81b9-9b6af8358b04)
 
-WSUS or SCCM / MECM for patching
+![IMG_A46DD81F-0456-4716-9EE0-9964DF7F9F27](https://github.com/user-attachments/assets/cbcae326-4e51-45c7-9e10-8d7e7fb482e4)
 
-Additional GPOs (hardening, software deployment, browser settings)
 
-VPN into the VPC instead of public RDP
-
-Integration with Azure AD / Entra ID
 
 10. How to Use This Repo
 
@@ -326,205 +306,3 @@ Troubleshooting & documentation
 Feel free to clone, adapt, and build your own version.
 
 
----
-
-## 3. `documentation/ad-setup.md`
-
-```markdown
-# Active Directory Setup (helpdesk.local)
-
-## 1. Promote DC01 to Domain Controller
-
-1. Install the **Active Directory Domain Services** role from **Server Manager**.
-2. Promote the server to a new forest:
-   - Root domain name: `helpdesk.local`
-   - NetBIOS name: `HELPDESK`
-3. Restart after promotion.
-
-![Server Manager dashboard](../screenshots/domain-controller/01-server-manager-dashboard.png)
-
-## 2. Create OU Structure
-
-In **Active Directory Users and Computers (ADUC)**:
-
-- Right-click the domain → **New → Organizational Unit**.
-- Created OUs:
-  - `HR`
-  - `IT`
-  - `Sales`
-  - `Workstations`
-  - `Helpdesk users`
-  - `Helpdesk Computers`
-  - `Company Departments`
-  - `Service OUs`
-
-![OU structure](../screenshots/active-directory/01-aduc-root-ous.png)
-
-## 3. Create Users
-
-Examples:
-
-- John Parker – Sales → `jparker`
-- Maria Lopez – HR → `mlopez`
-- James Cruz – IT → `jcruz`
-
-![Create user](../screenshots/users-and-groups/01-create-user-john-parker-sales.png)
-
-I placed users into department OUs and added them to groups (covered more in `gpo-hardening.md` and `file-shares.md`).
-
-## 4. Join Workstation to Domain
-
-On **Workstation01**:
-
-1. Set the DNS server to point to `DC01` (`10.0.1.129`).
-2. Rename the computer if desired.
-3. Join the domain from **System Properties → Computer Name → Change**.
-4. Reboot and log in with a domain user.
-
-![Workstation joined](../screenshots/workstation/01-workstation-joined-to-domain.png)
-
-4. documentation/gpo-hardening.md
-# Security Baseline GPO
-
-GPO name: **Security Baseline GPO**  
-Linked to: **helpdesk.local** domain
-
-## 1. Password Policy
-
-Path:  
-`Computer Configuration → Policies → Windows Settings → Security Settings → Account Policies → Password Policy`
-
-Settings:
-
-- **Maximum password age:** 90 days
-- **Minimum password age:** 30 days
-- **Minimum password length:** 8 characters
-- **Password must meet complexity requirements:** Enabled
-
-![Password policy](../screenshots/gpo-security/03-gpo-password-policy-settings.png)
-
-## 2. Account Lockout Policy
-
-Path:  
-`Computer Configuration → Policies → Windows Settings → Security Settings → Account Policies → Account Lockout Policy`
-
-Settings:
-
-- Account lockout threshold: **5 invalid logon attempts**
-- Account lockout duration: **15 minutes**
-- Reset account lockout counter after: **10 minutes**
-
-![Account lockout policy](../screenshots/gpo-security/05-gpo-account-lockout-settings.png)
-
-## 3. Applying the GPO
-
-After linking the GPO at the domain level:
-
-```powershell
-gpupdate /force
-
-
-
----
-
-## 5. `documentation/file-shares.md`
-
-```markdown
-# File Shares and Permissions
-
-Root folder: `C:\CompanyShares`
-
-Subfolders:
-
-- `HR`
-- `IT`
-- `Sales`
-- `Public`
-
-![Folder structure](../screenshots/file-shares/01-companyshares-folder-structure.png)
-
-## 1. NTFS Permissions
-
-### HR
-
-- Group: `HR-Group`
-- Permissions: **Modify** (this folder, subfolders and files)
-
-### Public
-
-- Group: `Everyone` (lab) or `Domain Users` (more realistic)
-- Permissions: **Modify**
-
-![Public NTFS permissions](../screenshots/file-shares/03-public-share-permissions-everyone.png)
-
-## 2. Share Permissions
-
-Shared `C:\CompanyShares` as `\\DC01\CompanyShares`.
-
-Share permissions:
-
-- `Administrators` – Full Control
-- `Domain Users` – Read (access controlled by NTFS)
-
-![Share settings](../screenshots/file-shares/04-companyshares-advanced-sharing.png)
-
-## 3. Validation
-
-From the workstation:
-
-- Log in as HR user → confirm HR share access.
-- Log in as Sales user → confirm Sales share access.
-- Public is accessible to all.
-
-6. documentation/workstation-setup.md
-# Workstation Setup & Drive Mapping
-
-## 1. DNS & Domain Join
-
-1. Configure workstation DNS → `10.0.1.129` (DC01).
-2. Join domain `helpdesk.local`.
-3. Reboot and log in as a domain user.
-
-## 2. Drive Mapping GPO
-
-GPO: `Map HR Drive GPO` (example for HR)
-
-Path:  
-`User Configuration → Preferences → Windows Settings → Drive Maps`
-
-Drive:
-
-- Action: **Update**
-- Location: `\\DC01\CompanyShares\HR`
-- Drive letter: `H:`
-- Label as: `HR Share`
-
-![HR drive GPO](../screenshots/gpo-drive-mapping/04-hr-drive-gpo-properties-path.png)
-
-Apply with:
-
-```powershell
-gpupdate /force
-
-
-Confirm in File Explorer:
-
-
----
-
-## 7. What you should do now
-
-1. **Create the repo** on GitHub: `homelab-ad-aws` (or any name you like).
-2. Locally:
-   - Create the folder structure above.
-   - Put your images into the matching `screenshots/...` folders.
-   - Rename them to the suggested filenames (or update the markdown paths).
-3. Copy-paste:
-   - `README.md`
-   - All files in `documentation/`
-4. Commit & push.
-
-If you want, next we can:
-
-- Add a **network diagram** for `architecture-diagrams/`.
-- Add a **“Projects”** section in the README that explains how this homelab relates to a helpdesk / sysadmin / jr-sysadmin role.
