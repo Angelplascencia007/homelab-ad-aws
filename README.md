@@ -88,7 +88,8 @@ DC01 RDP connect
 
 <img width="1920" height="1080" alt="17" src="https://github.com/user-attachments/assets/5b3b8d3e-1106-41aa-a19e-15f01e3e5d9d" />
 
-![18](https://github.com/user-attachments/assets/7c82b404-8fa6-4a99-8dff-26dac9848125)
+![18](https://github.com/user-attachments/assets/bb863b77-dd87-460d-aca6-b9d2cb219968)
+
 
 ### Workstation – Workstation01
 
@@ -120,8 +121,7 @@ I created a simple but realistic OU structure:
 
 Workstations have their own OU so I can target GPOs just at computers:
 
-![Workstations OU](screenshots/active-directory/05-aduc-workstations-ou-empty.png) 
-
+Workstations OU
 ![IMG_5564](https://github.com/user-attachments/assets/35fce3e0-b2a5-4c2e-be14-20ca520e8624)
 
 ### Users
