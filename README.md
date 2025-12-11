@@ -30,20 +30,40 @@ This repository documents my full **Active Directory homelab** built entirely in
 
 AWS console – EC2 instances:
 
-![EC2 instances]()
+<img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/4d58b8ae-d43c-461c-be8f-40a6c7dc1cb3" />
 
 VPC, subnet, route table, and Internet gateway configuration:
+VPC 
 
-![VPC settings](screenshots/aws/02-vpc-settings.png)  
-![Subnet settings](screenshots/aws/03-subnet-settings.png)  
-![Route table](screenshots/aws/04-route-table-settings.png)  
-![Internet gateway](screenshots/aws/05-internet-gateway.png)
+<img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/f74dc333-0645-43d7-b231-5fc3724490ce" />
+
+<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/b21c7eaf-f5fd-44e0-b6ea-8aabf3c026fb" />
+
+Subnet settings
+
+<img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/43517948-ef7c-4001-b0ee-dab246166276" />
+
+<img width="1920" height="1080" alt="5" src="https://github.com/user-attachments/assets/8313ec6e-723c-462b-b9ec-b7cb8fa12b44" />
+
+Route table
+
+<img width="1920" height="1080" alt="8" src="https://github.com/user-attachments/assets/992a626d-04a3-43fe-85a6-984bd45214b0" />
+
+<img width="1920" height="1080" alt="9" src="https://github.com/user-attachments/assets/dcc19c52-f43d-431b-b45d-565a3796ffc8" />
+
+Internet gateway
+
+<img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/d33bc6a1-0e10-47d8-81c5-1c53358ca407" />
+
+<img width="1920" height="1079" alt="7" src="https://github.com/user-attachments/assets/5a73cffa-c387-431f-bad6-b735c8a5449d" />
 
 ---
 
 ## 2. EC2 Instances
 
 ### Domain Controller – DC01
+
+<img width="1920" height="1080" alt="10" src="https://github.com/user-attachments/assets/92625f53-4833-492b-99d3-00618b340a7b" />
 
 - AMI: **Microsoft Windows Server 2019 Base**
 - Instance type: `t3.small`
@@ -52,8 +72,25 @@ VPC, subnet, route table, and Internet gateway configuration:
   - RDP from my public IP
   - Domain services within the VPC (TCP/UDP 53, 88, 389, 445, etc. – locked down to the subnet)
 
-![DC01 instance details](screenshots/aws/06-dc01-instance-details.png)  
-![DC01 RDP connect](screenshots/aws/07-dc01-rdp-connect.png)
+DC01 instance details
+
+<img width="1920" height="1080" alt="11" src="https://github.com/user-attachments/assets/bf29fe96-bcb1-4c8c-9dc2-332f1aef60c0" />
+
+<img width="1920" height="1080" alt="15" src="https://github.com/user-attachments/assets/b8282a69-fb50-4090-9d3d-d65f9c92030c" />
+
+<img width="1920" height="1080" alt="16" src="https://github.com/user-attachments/assets/14b6a4da-1dd0-4a49-acb1-3ad7670efccf" />
+
+DC01 RDP connect
+
+<img width="1920" height="1080" alt="12" src="https://github.com/user-attachments/assets/0af46646-bf69-4cf7-8c96-a3e4894f2035" />
+
+<img width="1920" height="1079" alt="13" src="https://github.com/user-attachments/assets/04e612c5-927d-4c30-966a-b8bb84df32cc" />
+
+<img width="1910" height="725" alt="14" src="https://github.com/user-attachments/assets/fd0cbe5b-595e-4e56-a4f4-0b59c34621d2" />
+
+<img width="1920" height="1080" alt="17" src="https://github.com/user-attachments/assets/5b3b8d3e-1106-41aa-a19e-15f01e3e5d9d" />
+
+![18](https://github.com/user-attachments/assets/7c82b404-8fa6-4a99-8dff-26dac9848125)
 
 ### Workstation – Workstation01
 
