@@ -1,308 +1,305 @@
-# AWS Active Directory Homelab (helpdesk.local)
+🏢 AWS Active Directory Homelab – helpdesk.local
 
-This repository documents my full **Active Directory homelab** built entirely in **AWS**, including:
+A fully documented Windows Server / Active Directory environment built in AWS
 
-- Custom VPC + subnet + routing + security groups  
-- A Windows Server 2019 **Domain Controller** (`DC01`)  
-- A Windows Server 2019 **workstation** (`Workstation01`)  
-- A fully configured **Active Directory domain**: `helpdesk.local`  
-- OUs, users, groups, security groups  
-- **Security baseline GPO** (passwords, lockout policies, auditing)  
-- **File shares** (HR, Sales, IT, Public) with NTFS + share permissions  
-- **GPO-based drive mappings** for departments  
-- RDP access controlled via AD security groups  
+This project demonstrates my ability to design, deploy, secure, document, and troubleshoot a real-world Active Directory environment in AWS.
+It includes AWS networking, Windows Server administration, Group Policy design, file server configuration, and drive-mapping automation used in enterprise environments.
 
----
+📌 Table of Contents
 
-## 1. Architecture Overview
+Project Overview
 
-- **Cloud:** AWS  
-- **Region:** us-east-2 (Ohio)  
-- **VPC:** `Home lab Cloud` – `10.0.0.0/16`  
-- **Subnet:** `home lab cloud subnet` – `10.0.1.0/24`  
-- **Instances:**
-  - `DC01` – Windows Server 2019 Datacenter, `t3.small`, private IP `10.0.1.129`
-  - `Workstation01` – Windows Server 2019 Datacenter, `t3.micro`, private IP `10.0.1.223`
+Architecture Diagram
 
-### Screenshots
+AWS Network Build (VPC, Subnet, Routing)
 
-AWS console – EC2 instances:
+Domain Controller Deployment
 
-<img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/4d58b8ae-d43c-461c-be8f-40a6c7dc1cb3" />
+Active Directory Design (OUs, Users, Groups)
 
-VPC, subnet, route table, and Internet gateway configuration:
-VPC 
+Security Baseline GPO
 
-<img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/f74dc333-0645-43d7-b231-5fc3724490ce" />
+File Server & NTFS Permissions
 
-<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/b21c7eaf-f5fd-44e0-b6ea-8aabf3c026fb" />
+Drive Mapping GPO (Automation)
 
-Subnet settings
+Workstation Domain Join & Testing
 
-<img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/43517948-ef7c-4001-b0ee-dab246166276" />
+Real Troubleshooting Example (DNS Failure)
 
-<img width="1920" height="1080" alt="5" src="https://github.com/user-attachments/assets/8313ec6e-723c-462b-b9ec-b7cb8fa12b44" />
+Skills Demonstrated
 
-Route table
+Future Enhancements
 
-<img width="1920" height="1080" alt="8" src="https://github.com/user-attachments/assets/992a626d-04a3-43fe-85a6-984bd45214b0" />
+📘 Project Overview
 
-<img width="1920" height="1080" alt="9" src="https://github.com/user-attachments/assets/dcc19c52-f43d-431b-b45d-565a3796ffc8" />
+This homelab simulates a realistic enterprise Windows environment, including:
 
-Internet gateway
+A custom VPC with subnet, route table, and Internet Gateway
 
-<img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/d33bc6a1-0e10-47d8-81c5-1c53358ca407" />
+A Windows Server 2019 Domain Controller (AD DS + DNS)
 
-<img width="1920" height="1079" alt="7" src="https://github.com/user-attachments/assets/5a73cffa-c387-431f-bad6-b735c8a5449d" />
+A Windows Server 2019 Workstation joined to the domain
 
----
+Department-based OUs, users, and groups
 
-## 2. EC2 Instances
+Security baseline Group Policies
 
-### Domain Controller – DC01
+NTFS + share-level file server permissions
 
-<img width="1920" height="1080" alt="10" src="https://github.com/user-attachments/assets/92625f53-4833-492b-99d3-00618b340a7b" />
+Automated drive mapping using Group Policy Preferences
 
-- AMI: **Microsoft Windows Server 2019 Base**
-- Instance type: `t3.small`
-- Launched in `Home lab Cloud` VPC and subnet
-- Security group allows:
-  - RDP from my public IP
-  - Domain services within the VPC (TCP/UDP 53, 88, 389, 445, etc. – locked down to the subnet)
+Real-world troubleshooting steps (DNS, domain join, GP issues)
 
-DC01 instance details
+This project mirrors what you’d build in a real helpdesk or system administrator role and is excellent for both practice and portfolio demonstration.
 
-<img width="1920" height="1080" alt="11" src="https://github.com/user-attachments/assets/bf29fe96-bcb1-4c8c-9dc2-332f1aef60c0" />
+🖥️ Architecture Diagram
+                   AWS VPC – 10.0.0.0/16
+               ┌────────────────────────────────┐
+               │        Subnet 10.0.1.0/24       │
+               │                                 │
+     ┌──────────────────────┐       ┌────────────────────────┐
+     │  DC01 (Domain Ctrl)  │       │ Workstation01 (Client) │
+     │  10.0.1.129          │◄────►│ 10.0.1.223              │
+     │ AD DS + DNS + File   │       │ Domain-Joined Test PC   │
+     └──────────────────────┘       └────────────────────────┘
+               │                                 │
+               └────────────────────────────────┘
+                  Internet Gateway for RDP
 
-<img width="1920" height="1080" alt="15" src="https://github.com/user-attachments/assets/b8282a69-fb50-4090-9d3d-d65f9c92030c" />
+⭐ 1. AWS Network Build
 
-<img width="1920" height="1080" alt="16" src="https://github.com/user-attachments/assets/14b6a4da-1dd0-4a49-acb1-3ad7670efccf" />
+A reliable Active Directory environment requires a stable and correctly configured network.
 
-DC01 RDP connect
+1.1 VPC Creation
+<img src="https://github.com/user-attachments/assets/f74dc333-0645-43d7-b231-5fc3724490ce" width="100%" />
 
-<img width="1920" height="1080" alt="12" src="https://github.com/user-attachments/assets/0af46646-bf69-4cf7-8c96-a3e4894f2035" />
+Why this matters:
+A VPC gives you a private network where you control IP ranges, routing, DNS, and security — exactly how enterprise networks operate.
 
-<img width="1920" height="1079" alt="13" src="https://github.com/user-attachments/assets/04e612c5-927d-4c30-966a-b8bb84df32cc" />
+1.2 Subnet Configuration
+<img src="https://github.com/user-attachments/assets/b21c7eaf-f5fd-44e0-b6ea-8aabf3c026fb" width="100%" /> <img src="https://github.com/user-attachments/assets/43517948-ef7c-4001-b0ee-dab246166276" width="100%" />
 
-<img width="1910" height="725" alt="14" src="https://github.com/user-attachments/assets/fd0cbe5b-595e-4e56-a4f4-0b59c34621d2" />
+Why this matters:
+Domain Controllers and domain-joined computers must live on the same subnet for easy communication.
 
-<img width="1920" height="1080" alt="17" src="https://github.com/user-attachments/assets/5b3b8d3e-1106-41aa-a19e-15f01e3e5d9d" />
+1.3 Route Table & Internet Gateway
+<img src="https://github.com/user-attachments/assets/992a626d-04a3-43fe-85a6-984bd45214b0" width="100%" /> <img src="https://github.com/user-attachments/assets/dcc19c52-f43d-431b-b45d-565a3796ffc8" width="100%" />
 
-![18](https://github.com/user-attachments/assets/bb863b77-dd87-460d-aca6-b9d2cb219968)
+The route table provides outbound access for:
 
+Windows updates
 
-### Workstation – Workstation01
+Feature installation
 
-- AMI: **Microsoft Windows Server 2019 Base**
-- Instance type: `t3.micro`
-- Joined to `helpdesk.local` and used to test GPOs, file shares, and drive mappings.
+RDP administration
 
-## 3. Active Directory Design
+<img src="https://github.com/user-attachments/assets/d33bc6a1-0e10-47d8-81c5-1c53358ca407" width="100%" />
+⭐ 2. Domain Controller Deployment
+<img src="https://github.com/user-attachments/assets/92625f53-4833-492b-99d3-00618b340a7b" width="100%" />
+2.1 Instance Setup
 
-**Domain:** `helpdesk.local`
+Windows Server 2019
 
-![IMG_5529](https://github.com/user-attachments/assets/05c1666e-2f8b-4bd1-94e7-ba17893e088c)
+Size: t3.small (AD DS needs more than 1GB RAM)
 
-### Organizational Units
+Private IP: 10.0.1.129
 
-I created a simple but realistic OU structure:
+2.2 Security Groups
 
-- `HR`
-- `IT`
-- `Sales`
-- `Workstations`
-- `Helpdesk users`
-- `Helpdesk Computers`
-- `Company Departments`
-- `Service OUs`
+Ports allowed (least privilege):
 
-![IMG_F3944D0A-D20C-495E-902D-AE610133C64F](https://github.com/user-attachments/assets/c66aeff5-cd80-4883-8351-f79862192bdc)
+Service	Port	Why Needed
+RDP	3389	Admin access
+DNS	53	AD name resolution
+LDAP	389	Directory queries
+Kerberos	88	Authentication
+SMB	445	SYSVOL, file shares
+RPC	135	AD tools & GP
+2.3 Promote to Domain Controller
 
+Steps inside Server Manager:
 
-Workstations have their own OU so I can target GPOs just at computers:
+Add roles → AD DS
 
-Workstations OU
-![IMG_5564](https://github.com/user-attachments/assets/35fce3e0-b2a5-4c2e-be14-20ca520e8624)
+Promote → New Forest
 
-### Users
+Domain: helpdesk.local
 
-Example users:
+Reboot and verify domain services
 
-- **John Parker** – Sales (`jparker`)
-- **Maria Lopez** – HR (`mlopez`)
-- **James Cruz** – IT (`jcruz`)
-- **Test User1** – generic test account
+<img src="https://github.com/user-attachments/assets/fd0cbe5b-595e-4e56-a4f4-0b59c34621d2" width="100%" />
+⭐ 3. Active Directory Design
 
-Create John Parker
-![IMG_5533](https://github.com/user-attachments/assets/fff48354-e08b-49e2-a4e9-bc5e2f3559c2)
+A well-structured AD is critical for applying the correct policies and permissions.
 
-Create Maria Lopez
-![IMG_5534](https://github.com/user-attachments/assets/e38e2512-2f32-45a7-b57c-a4cfb35f8ead)
+<img src="https://github.com/user-attachments/assets/05c1666e-2f8b-4bd1-94e7-ba17893e088c" width="100%" />
+3.1 Organizational Units
+<img src="https://github.com/user-attachments/assets/c66aeff5-cd80-4883-8351-f79862192bdc" width="100%" />
 
-Create James Cruz
-![IMG_5535](https://github.com/user-attachments/assets/ba7abba4-8dab-4b13-b2c1-7720a634294d)
+OUs created:
 
-## 4. Security Baseline GPO
+Company Departments
 
-I created a **domain-linked GPO** called **“Security Baseline GPO”** that configures:
+HR
 
-- Password policy (length, age, complexity)
-- Account lockout policy
-- Kerberos policy
-- Local security options & auditing (extendable)
+IT
 
-Create Security Baseline GPO
-![IMG_5568](https://github.com/user-attachments/assets/d03fe194-885e-4447-8e27-bdf263c8d4cf)
+Sales
 
+Workstations
 
-### Password Policy
+Helpdesk Users
 
-- Maximum password age: **90 days**
-- Minimum password age: **30 days**
-- Minimum length: **8 characters**
-- Complexity: **Enabled**
+Helpdesk Computers
 
-Password policy settings
+Why this matters:
+This mirrors real companies and ensures Group Policies apply to the correct scope.
 
-![IMG_5570](https://github.com/user-attachments/assets/c33f7b01-eca2-4e15-a898-f8afc20b3aa6)
+3.2 User Creation
 
-### Account Lockout Policy
+Users created to test permissions & GPOs:
 
-- Lockout threshold: **5** invalid attempts  
-- Lockout duration: **15 minutes**  
-- Reset counter after: **10 minutes**
+John Parker – Sales
 
-Account lockout settings
+Maria Lopez – HR
 
-After linking the GPO at the domain level, I forced an update:
-![IMG_5571](https://github.com/user-attachments/assets/e8b8655b-c916-4b12-9dc7-113cff605c75)
+James Cruz – IT
 
-5. File Shares & NTFS Permissions
+Examples:
 
-On DC01 I created a root folder:
+<img src="https://github.com/user-attachments/assets/fff48354-e08b-49e2-a4e9-bc5e2f3559c2" width="100%" /> <img src="https://github.com/user-attachments/assets/ba7abba4-8dab-4b13-b2c1-7720a634294d" width="100%" />
+⭐ 4. Security Baseline GPO
+
+This domain-linked GPO enforces secure authentication practices.
+
+<img src="https://github.com/user-attachments/assets/d03fe194-885e-4447-8e27-bdf263c8d4cf" width="100%" />
+Password Policy
+<img src="https://github.com/user-attachments/assets/c33f7b01-eca2-4e15-a898-f8afc20b3aa6" width="100%" />
+Account Lockout
+<img src="https://github.com/user-attachments/assets/e8b8655b-c916-4b12-9dc7-113cff605c75" width="100%" />
+
+These are standard security requirements in most companies.
+
+⭐ 5. File Server & NTFS Permissions
+
+Folder structure:
 
 C:\CompanyShares\
-   ├─ HR
-   ├─ IT
-   ├─ Sales
-   └─ Public
+   ├── HR
+   ├── IT
+   ├── Sales
+   └── Public
 
+<img src="https://github.com/user-attachments/assets/f90a96ef-91cf-4187-84e9-33e5d91d14f8" width="100%" />
 
-NTFS Permissions
+Why NTFS matters:
+NTFS defines actual access.
+Share permissions are set to read — NTFS determines departmental permissions.
 
-HR-Group – Modify on HR
+⭐ 6. Drive Mapping Automation
 
-Sales-Group – Modify on Sales
+Each department receives an automatic mapped network drive using GPO Preferences.
 
-IT-Group – Modify on IT
+<img src="https://github.com/user-attachments/assets/c4e1356f-fb2f-4919-b3ba-0d7bd95ec6e9" width="100%" />
 
-Everyone / Domain Users – Read/Write on Public (lab choice)
+This simulates real-world corporate user experience.
 
-Helpdesk\Administrators – Full control on all
+⭐ 7. Workstation Join & Testing
+<img src="https://github.com/user-attachments/assets/4bbbc3d4-df07-4780-8614-8b865fbdedc1" width="100%" />
 
-![IMG_5588](https://github.com/user-attachments/assets/f90a96ef-91cf-4187-84e9-33e5d91d14f8)
+Steps:
 
+Set DNS to the DC: 10.0.1.129
 
+Join domain
 
-Share Permissions
+Log in as HR/Sales/IT users
 
-Shared C:\CompanyShares as \\DC01\CompanyShares:
+Verify:
 
-Administrators – Full Control
+Correct file share permissions
 
-Domain Users – Read (I enforce access via NTFS)
+Correct mapped drives
 
-![IMG_5592](https://github.com/user-attachments/assets/153e3d3e-2945-4815-8cb7-365e7bd5cbf8)
+GPO enforcement
 
+⭐ 8. Troubleshooting DNS Example
 
-6. GPO – Drive Mapping
+A realistic issue occurred where the workstation couldn't resolve the domain.
 
-To automatically map drives based on department, I used Group Policy Preferences → Drive Maps.
+<img src="https://github.com/user-attachments/assets/cb990442-1692-420c-904e-91c0cbc79d94" width="100%" />
+Fix Required:
 
-Example: Map HR drive for HR users
+Ensuring workstation points only to domain controller for DNS
 
-GPO: Map HR Drive GPO
+Verifying forward lookup zone
 
-Location: \\DC01\CompanyShares\HR
+Allowing DNS traffic in Security Groups
 
-Drive letter: H:
+Restarting DNS service
 
-Label: HR Share
+Running nslookup tests
 
-Security filter / WMI / Item-level targeting: HR group only (lab logic)
+<img src="https://github.com/user-attachments/assets/cbcae326-4e51-45c7-9e10-8d7e7fb482e4" width="100%" />
 
-![IMG_5596](https://github.com/user-attachments/assets/c4e1356f-fb2f-4919-b3ba-0d7bd95ec6e9)
+Troubleshooting examples like this show hands-on understanding — a major plus for recruiters.
 
-After applying the GPO, I ran:
+🧠 Skills Demonstrated
+AWS Cloud Skills
 
-gpupdate /force
+VPC & subnet design
 
-![IMG_5586](https://github.com/user-attachments/assets/4e22c1e2-4358-421b-996d-0e4510bce558)
+Route tables & Internet Gateway configuration
 
-from the workstation and confirmed the mapped drive appears in File Explorer.
+EC2 deployment & IAM integration
 
-7. Workstation Join & Testing
+Security Group firewalling (least privilege model)
 
-On Workstation01:
+Windows Server / SysAdmin Skills
 
-Pointed DNS to DC01 (10.0.1.129).
+Active Directory Domain Services
 
-Joined the helpdesk.local domain.
+DNS configuration & troubleshooting
 
-Logged in as different users to verify:
+Organizational Unit design
 
-HR users can access HR and Public.
+User and group provisioning
 
-Sales users can access Sales and Public.
+NTFS permissioning
 
-IT users have wider access (lab-style admin).
+Group Policy creation and targeting
 
-Mapped drives appear automatically.
+Automation / Policy Management
 
+Drive mapping via Group Policy Preferences
 
-![IMG_5553](https://github.com/user-attachments/assets/4bbbc3d4-df07-4780-8614-8b865fbdedc1)
+Domain-wide security baseline policies
 
+Troubleshooting & Tools
 
+DNS failures
 
+nslookup, Event Viewer
 
-8. Troubleshooting Example – DNS / nslookup
+Group Policy Result / Force Update
 
-At one point I saw DNS timeouts when trying to resolve the domain from the workstation:
+Authentication & logon issues
 
-This was fixed by:
+🚀 Future Enhancements
 
-Ensuring the workstation’s only DNS server is 10.0.1.129 (DC01).
+To expand the lab even further:
 
-Verifying the helpdesk.local forward lookup zone exists on DC01.
+Add a second Domain Controller for redundancy
 
-Checking security groups to allow DNS (UDP/TCP 53) within the subnet.
+Configure DHCP on the domain
 
-![IMG_6B052B13-0EFE-40C9-8218-CCF18FA8848D](https://github.com/user-attachments/assets/cb990442-1692-420c-904e-91c0cbc79d94)
+Deploy WSUS update server
 
-![IMG_F140E4E6-DA26-480C-8FD4-D0A3CEBF992C](https://github.com/user-attachments/assets/7f25e764-6dea-46d8-81b9-9b6af8358b04)
+Add Azure AD Connect & test hybrid identity
 
-![IMG_A46DD81F-0456-4716-9EE0-9964DF7F9F27](https://github.com/user-attachments/assets/cbcae326-4e51-45c7-9e10-8d7e7fb482e4)
+Automate user onboarding with PowerShell
 
+Add a SIEM solution (Splunk / Wazuh)
 
-
-10. How to Use This Repo
-
-This repo is meant as both:
-
-A learning resource for people wanting to build a similar homelab, and
-
-A portfolio project demonstrating my experience with:
-
-AWS networking & security groups
-
-Windows Server
-
-Active Directory & Group Policy
-
-File server design and permissions
-
-Troubleshooting & documentation
-
-Feel free to clone, adapt, and build your own version.
-
-
+Implement GPO hardening (CIS benchmarks)
